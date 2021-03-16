@@ -50,9 +50,8 @@ ends(Nil)                                             // empty list
 ##### Return Boolean whether the list is sorted or not
 ```scala
 val posortowana: List[Int] => Boolean = xs =>
-  if (xs == Nil || xs.tail == List()) true
-  else if (xs.head > xs.tail.head) false
-  else posortowana(xs.tail.head :: xs.tail.tail)
+  if (xs == Nil || xs.tail == Nil) true
+  else (xs.head <= xs.tail.head) && posortowana(xs.tail)
 ```
 
 ```scala
@@ -67,14 +66,12 @@ posortowana(List())                     // res7 = Empty List
 ```
 
 ### Task #4
-##### Return boolean wether the list is sorted or not
+##### Return Boolean whether the list is sorted or not
 ```scala
 val glue: (List[String], String) => String = (xs, separator) =>
   if (xs == Nil) ""
-  else if (xs.tail == List()) xs.head
   else if (xs.tail == Nil) xs.head
-  else if (xs.tail.tail == Nil) xs.head + separator + xs.tail.head
-  else glue(xs.head + separator + xs.tail.head :: xs.tail.tail, separator)
+  else xs.head + separator + glue(xs.tail, separator)
 ```
 
 ```scala

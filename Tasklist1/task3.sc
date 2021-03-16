@@ -4,6 +4,12 @@ import scala.annotation.tailrec
 //  posortowana niemalejąco,
 //  np. posortowana(List(1,3,3,5,6,7)) == true
 
+// v1.1:
+val posortowana: List[Int] => Boolean = xs =>
+  if (xs == Nil || xs.tail == Nil) true
+  else (xs.head <= xs.tail.head) && posortowana(xs.tail)
+
+// v1.0
 val posortowana: List[Int] => Boolean = xs =>
   if (xs == Nil || xs.tail == List()) true
   else if (xs.head > xs.tail.head) false

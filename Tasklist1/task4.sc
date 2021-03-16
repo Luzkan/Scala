@@ -6,12 +6,18 @@ import scala.annotation.tailrec
 //  np. glue(List("To", "jest", "napis"), "-") == "To-jest-napis"
 //      glue(Nil, "-") == ""
 
+// v1.1
+val glue: (List[String], String) => String = (xs, separator) =>
+  if (xs == Nil) ""
+  else if (xs.tail == Nil) xs.head
+  else xs.head + separator + glue(xs.tail, separator)
+
+// v1.0
 val glue: (List[String], String) => String = (xs, separator) =>
   if (xs == Nil) ""
   else if (xs.tail == Nil || xs.tail == List()) xs.head
   else if (xs.tail.tail == Nil) xs.head + separator + xs.tail.head
   else glue(xs.head + separator + xs.tail.head :: xs.tail.tail, separator)
-
 
 
 glue(List("To", "jest", "napis"), "-") == "To-jest-napis"
