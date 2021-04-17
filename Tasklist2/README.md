@@ -15,7 +15,9 @@
 ### Disclaimer: Functions in Task #1, #2 and #3 has to be linear (linear complexity compared to the length of input list).
 
 ### Task #1
+
 ##### Write a function that takes N first elements of a list.
+
 ```scala
 def take[A](n: Int, xs: List[A]): List[A] = {
   @tailrec
@@ -45,8 +47,31 @@ take(3, List(1, 2, "c")) == List(1, 2, "c")  // true
 take(-2, List(1, 2, 3)) == List()            // true
 ```
 
+##### Update #1
+
+```scala
+def take[A](n: Int, xs: List[A]): List[A] = {
+  @tailrec
+  // Accumulator will hold the final result
+  def takeTailrec(n: Int, xs: List[A], accum: List[A]): List[A] =
+    xs match {
+      // When counter is positive - appending head to the end of accumulator
+      // and creating a recursive call on tail of current "xs" list
+      case head :: tail => if (n > 0) takeTailrec(n-1, tail, accum ::: List(head)) else accum
+      // We repeat only on positive numbers
+      case Nil => accum
+  }
+
+  takeTailrec(n, xs, Nil)
+}
+```
+
+
+
 ### Task #2
+
 ##### Write a function that drops N first elements of a list.
+
 ```scala
 @tailrec
 def drop[A](n: Int, xs: List[A]): List[A] = xs match {
@@ -57,6 +82,7 @@ def drop[A](n: Int, xs: List[A]): List[A] = xs match {
 ```
 
 ##### Tests
+
 ```scala
 drop(2, List(1,2,3,5,6)) == List(3,5,6)       // true
 drop(-2, List(1,2,3,5,6)) == List(1,2,3,5,6)  // true
@@ -69,8 +95,22 @@ drop(3, List(1, 2, "c", "d")) == List("d")    // true
 drop(-2, List(1, 2, 3)) == List(1, 2, 3)      // true
 ```
 
+##### Update #1
+
+```scala
+@tailrec
+def drop[A](n: Int, xs: List[A]): List[A] =
+  xs match {
+    // Abandoning the head element and decreasing counter "n"
+    case _ :: tail => if (n > 0) drop(n - 1, tail) else xs
+    case Nil => Nil
+  }
+```
+
 ### Task #3
+
 ##### Write a function that reverses a list.
+
 ```scala
 def reverse[A](xs: List[A]): List[A] = {
   @tailrec
@@ -88,6 +128,7 @@ def reverse[A](xs: List[A]): List[A] = {
 ```
 
 ##### Tests:
+
 ```scala
 reverse(List("Ala", "ma", "kota")) == List("kota", "ma", "Ala")  // true
 reverse(List(1, 2, 3, 4)) == List(4, 3, 2, 1)                    // true
@@ -96,6 +137,7 @@ reverse(List("Ala", "ma")) == List("Ala", "ma")                  // false
 ```
 
 ##### Explanation:
+
 ```scala
 // Examples:
 $ "a" :: List("b", "c", "d")
@@ -117,8 +159,29 @@ def reverse[A](xs: List[A]): List[A] = xs match {
 }
 ```
 
+##### Update #1
+
+```scala
+def reverse[A](xs: List[A]): List[A] = {
+  @tailrec
+  def reverseTailrec(res: List[A], accum: List[A]): List[A] =
+    accum match {
+      // Taking current head from accumulator and prepending it to the result
+      // Removing the head from accumulator by recursive call on the tail
+      case head :: tail => reverseTailrec(head :: res, tail)
+      // When accumulator is empty - the list is reversed
+      case Nil => res
+    }
+
+  // Starting inner function with "xs" as the accumulator value
+  reverseTailrec(Nil, xs)
+}
+```
+
 ### Task #4
+
 ##### Write a function that repeats N times the element where N is an integer in a list.
+
 ```scala
 val replicate: List[Int] => List[Int] = xs => {
 
@@ -144,6 +207,7 @@ val replicate: List[Int] => List[Int] = xs => {
 ```
 
 ##### Tests:
+
 ```scala
 replicate(List(1,0,4,-2,3)) == List(1, 4, 4, 4, 4, 3, 3, 3)  // true
 replicate(List(-3)) == List()                                // true
@@ -153,6 +217,7 @@ replicate(List()) == List()                                  // true
 ```
 
 ##### Explanation:
+
 ```scala
 // @Note: This is not tail-recursive, but easier to understand
 val replicate:List[Int] => List[Int] = xs => {
@@ -167,9 +232,36 @@ val replicate:List[Int] => List[Int] = xs => {
   }
 ```
 
-### Task #5
-##### Calculate 3rd root of a double with epsilon approximation.
+##### Update #1
+
 ```scala
+val replicate: List[Int] => List[Int] = xs => {
+
+  // Number repeater (without for loop to keep things functional)
+  def replicateRepeater(number: Int, iter: Int): List[Int] =
+    if (iter > 0) number :: replicateRepeater(number, iter-1) else Nil
+
+
+  @tailrec
+  def replicateTailrec(xs: List[Int], accum: List[Int]): List[Int] = {
+    xs match {
+      // Return our result when finished (accumulator hold the result)
+      case Nil => accum
+      // Recursive call on tail and appending repeated number to accumulator
+      case head :: tail => replicateTailrec(tail, accum ::: replicateRepeater(head, head))
+    }
+  }
+
+  replicateTailrec(xs, Nil)
+}
+```
+
+### Task #5
+
+##### Calculate 3rd root of a double with epsilon approximation.
+
+```scala
+
 val root3: Double => Double = a => {
   @tailrec
   def root3_Tailrec(a: Double, xi: Double): Double = {
@@ -189,6 +281,7 @@ val root3: Double => Double = a => {
 ```
 
 ##### Tests:
+
 ```scala
 root3(125.0) == 5.0   // true
 root3(64.0) == 4.0    // true
@@ -196,4 +289,23 @@ root3(8.0) == 2.0     // true
 root3(0.0) == 0.0     // true
 root3(-64.0) == -4.0  // true
 root3(2.0) != 1.0     // true
+```
+
+##### Update #1
+
+```scala
+val root3: Double => Double = a => {
+  @tailrec
+  def root3_Tailrec(xi: Double): Double = {
+    // if:
+    //    x_{i}^3 - a| ≤  * |a|
+    // then relative accuracy is achieved -> returning approximation x_{i}
+    if ((xi*xi*xi - a).abs <= 10e-15 * a.abs) xi
+    // else calculating next approximation:
+    //    x_{i+1} = x_{i} + (a/x_{i}^2 - x_{i})/3
+    else root3_Tailrec(xi + (a/(xi*xi) - xi)/3)
+  }
+
+  root3_Tailrec(if (a > 1) a/3 else a)
+}
 ```

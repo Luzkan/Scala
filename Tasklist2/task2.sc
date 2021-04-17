@@ -22,3 +22,15 @@ drop(2, List("a")) == List()                  // true
 drop(1, List()) == List()                     // true
 drop(3, List(1, 2, "c", "d")) == List("d")    // true
 drop(-2, List(1, 2, 3)) == List(1, 2, 3)      // true
+
+
+// -----------------------
+// Update #1:
+
+@tailrec
+def drop[A](n: Int, xs: List[A]): List[A] =
+  xs match {
+    // Abandoning the head element and decreasing counter "n"
+    case _ :: tail => if (n > 0) drop(n - 1, tail) else xs
+    case Nil => Nil
+  }

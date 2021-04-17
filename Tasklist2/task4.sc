@@ -45,3 +45,27 @@ replicate(List()) == List()                                  // true
 //        case Nil => Nil
 //        case head :: tail => replicateRepeater(head, head) ::: replicate(tail)
 //      }
+
+
+// -----------------------
+// Update #1:
+
+val replicate: List[Int] => List[Int] = xs => {
+
+  // Number repeater (without for loop to keep things functional)
+  def replicateRepeater(number: Int, iter: Int): List[Int] =
+    if (iter > 0) number :: replicateRepeater(number, iter-1) else Nil
+
+
+  @tailrec
+  def replicateTailrec(xs: List[Int], accum: List[Int]): List[Int] = {
+    xs match {
+      // Return our result when finished (accumulator hold the result)
+      case Nil => accum
+      // Recursive call on tail and appending repeated number to accumulator
+      case head :: tail => replicateTailrec(tail, accum ::: replicateRepeater(head, head))
+    }
+  }
+
+  replicateTailrec(xs, Nil)
+}

@@ -42,3 +42,22 @@ reverse(List("Ala", "ma")) == List("Ala", "ma")                  // false
 //      case head :: tail => reverse(tail) ::: List(head)
 //      case Nil => Nil
 //    }
+
+
+// -----------------------
+// Update #1:
+
+def reverse[A](xs: List[A]): List[A] = {
+  @tailrec
+  def reverseTailrec(res: List[A], accum: List[A]): List[A] =
+    accum match {
+      // Taking current head from accumulator and prepending it to the result
+      // Removing the head from accumulator by recursive call on the tail
+      case head :: tail => reverseTailrec(head :: res, tail)
+      // When accumulator is empty - the list is reversed
+      case Nil => res
+    }
+
+  // Starting inner function with "xs" as the accumulator value
+  reverseTailrec(Nil, xs)
+}
