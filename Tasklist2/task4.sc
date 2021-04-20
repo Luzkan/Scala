@@ -69,3 +69,19 @@ val replicate: List[Int] => List[Int] = xs => {
 
   replicateTailrec(xs, Nil)
 }
+
+
+// -----------------------
+// Update #2:
+
+val replicate: List[Int] => List[Int] = xs => {
+  // Number repeater (without for loop to keep things functional)
+  def replicateRepeater(tail: List[Int], number: Int, iter: Int): List[Int] =
+    if (iter > 0) number :: replicateRepeater(tail, number, iter-1) else replicate(tail)
+
+  xs match {
+    // Recursive call on tail and appending repeated number to accumulator
+    case head :: tail => replicateRepeater(tail, head, head)
+    case Nil => Nil
+  }
+}

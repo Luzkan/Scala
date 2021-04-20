@@ -48,3 +48,15 @@ def take[A](n: Int, xs: List[A]): List[A] = {
 
   takeTailrec(n, xs, Nil)
 }
+
+
+// -----------------------
+// Update #2:
+
+def take[A](n: Int, xs: List[A]): List[A] =
+  xs match {
+    case head :: tail  =>
+      if (n > 0) head :: take(n - 1, tail)
+      else Nil
+    case Nil => Nil
+  }
