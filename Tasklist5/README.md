@@ -99,8 +99,8 @@ class SavingsAccount(initialBalance: Double) extends BankAccount(initialBalance)
 
 	def earnMonthlyInterest(): Unit = {
 		transactionsDoneThisMonth = 0
-		if (this.checkBalance > 0 ) { super.deposit(MONTHLY_INTEREST * this.checkBalance) }
-		else { super.withdraw(MONTHLY_INTEREST * this.checkBalance) }
+		if (this.checkBalance >= 0){ super.deposit(MONTHLY_INTEREST * this.checkBalance) }
+		else { super.deposit(MONTHLY_INTEREST * this.checkBalance) }
 	}
 }
 ```
@@ -115,11 +115,24 @@ account.deposit(100)           // res7: Double = 1100.2
 account.withdraw(100)          // res8: Double = 1000.2
 account.withdraw(100)          // res9: Double = 900.2
 account.deposit(100)           // res10: Double = 999.2
+
+val account2 = new SavingsAccount(0)
+// Testing Case: Account Balance == 0.0
+// Should do nothing
+account2.checkBalance					 // res13: Double = 0.0
+account2.earnMonthlyInterest()
+account2.checkBalance					 // res15: Double = 0.0
+
+// Testing Case: Account Balance < 0.0
+// Should increase debt by 1%
+account2.withdraw(10)	 // res16: Double = -10.0
+account2.earnMonthlyInterest()
+account2.checkBalance					 // res18: Double = -9.9
 ```
 
 
 # **Task #3 a)**
-## Create an abstract class Animal that has methods for voice, animal type and overriden custom toString. It shall have unmodifiable name in the constructor.
+## Create an abstract class Animal that has methods for voice, animal type and overridden custom toString. It shall have unmodifiable name in the constructor.
 ```scala
 abstract class Animal(val name: String){
   def voice(): String
