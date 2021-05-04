@@ -65,18 +65,19 @@ lrepeat(5) (LazyList()).force == Nil
 
 # **Task #3 a)**
 ## Write the function `lBreadth`, which creates a stream containing all the node values of the lazy binary tree
+__Update #1:__ Removed unused parameter, changed name of the second parameter to `queue`.
 
 ```scala
 def lBreadth[A](ltree: lBT[A]): LazyList [A] = {
-	def lBreathInner(output: LazyList [A], tree: List[lBT[A]]): LazyList [A] =
-		tree match {
+	def lBreathInner(queue: List[lBT[A]]): LazyList [A] =
+		queue match {
 			// Tree will grow up to 2 times the size of the `take n`.
 			// Getting the node out of the tree into output LazyList (#::) and recursive calling on the rest of tree (merged lists)
-			case LNode(node, child_left, child_right) :: tail => node #:: lBreathInner(output, tail ::: List(child_left(), child_right()))
-			case LEmpty :: tail => lBreathInner(output, tail)
+			case LNode(node, child_left, child_right) :: tail => node #:: lBreathInner(tail ::: List(child_left(), child_right()))
+			case LEmpty :: tail => lBreathInner(tail)
 			case Nil => LazyList()
 		}
-	lBreathInner(LazyList(), List(ltree))
+	lBreathInner(List(ltree))
 }
 ```
 

@@ -42,15 +42,15 @@ val tree_zero = LNode(4, () => LNode(-2, () => LEmpty, () => LEmpty), () => LNod
 // a)
 
 def lBreadth[A](ltree: lBT[A]): LazyList [A] = {
-	def lBreathInner(output: LazyList [A], tree: List[lBT[A]]): LazyList [A] =
-		tree match {
+	def lBreathInner(queue: List[lBT[A]]): LazyList [A] =
+		queue match {
 			// Tree will grow up to 2 times the size of the `take n`.
 			// Getting the node out of the tree into output LazyList (#::) and recursive calling on the rest of tree (merged lists)
-			case LNode(node, child_left, child_right) :: tail => node #:: lBreathInner(output, tail ::: List(child_left(), child_right()))
-			case LEmpty :: tail => lBreathInner(output, tail)
+			case LNode(node, child_left, child_right) :: tail => node #:: lBreathInner(tail ::: List(child_left(), child_right()))
+			case LEmpty :: tail => lBreathInner(tail)
 			case Nil => LazyList()
 		}
-	lBreathInner(LazyList(), List(ltree))
+	lBreathInner(List(ltree))
 }
 
 lBreadth(tree_root).toList == List(5)
