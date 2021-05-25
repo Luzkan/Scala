@@ -18,6 +18,7 @@
 class UnderflowException(msg: String) extends Exception(msg)
 
 class MyQueue[+T] private (private val in: List[T], private val out: List[T]) {
+	def this() = this(Nil, Nil)
 
 	// Enqueue to the queue by prepending to the out list
 	def enqueue[E >: T] (new_element: E): MyQueue[E] =
@@ -33,7 +34,7 @@ class MyQueue[+T] private (private val in: List[T], private val out: List[T]) {
 			// if the in list is empty:
 			// 		- reverse the `out` list and replace the `in` list with it
 			// 	  - replace the `out` list with an empty list
-			case _ :: Nil  => if (out == Nil) { MyQueue.empty } else { new MyQueue[T](out.reverse, Nil) }
+			case _ :: Nil  => new MyQueue[T](out.reverse, Nil)
 			case _ :: tail => new MyQueue[T](tail, out)
 			case Nil => this
 		}
@@ -63,10 +64,11 @@ object MyQueue {
 ### *Tests*
 ```scala
 // Initializations
-MyQueue()      // res0: MyQueue[Nothing] = (List(), List())
-MyQueue(1)     // res1: MyQueue[Int] = (List(1), List())
-MyQueue(1, 2)  // res2: MyQueue[Int] = (List(1, 2), List())
-MyQueue.empty  // res3: MyQueue[Nothing] = (List(), List())
+new MyQueue      // res0: MyQueue[Nothing] = (List(), List())
+MyQueue()		 // res1: MyQueue[Nothing] = (List(), List())
+MyQueue(1)		 // res2: MyQueue[Int] = (List(1), List())
+MyQueue(1, 2)	 // res3: MyQueue[Int] = (List(1, 2), List())
+MyQueue.empty	 // res4: MyQueue[Nothing] = (List(), List())
 
 // Enqueue
 val q_0 = MyQueue()

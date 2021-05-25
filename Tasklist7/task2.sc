@@ -10,6 +10,7 @@ case class Node[+A](elem: A, left: BT[A], right: BT[A]) extends BT[A]
 class UnderflowException(msg: String) extends Exception(msg)
 
 class MyQueue[+T] private (private val in: List[T], private val out: List[T]) {
+	def this() = this(Nil, Nil)
 
 	def enqueue[E >: T] (new_element: E): MyQueue[E] =
 		in match {
@@ -19,7 +20,7 @@ class MyQueue[+T] private (private val in: List[T], private val out: List[T]) {
 
 	def dequeue: MyQueue[T] =
 		in match {
-			case _ :: Nil  => if (out == Nil) { MyQueue.empty } else { new MyQueue[T](out.reverse, Nil) }
+			case _ :: Nil  => new MyQueue[T](out.reverse, Nil)
 			case _ :: tail => new MyQueue[T](tail, out)
 			case Nil => this
 		}
