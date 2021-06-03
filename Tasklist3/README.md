@@ -13,7 +13,9 @@
 ---
 
 # **Task #1**
+
 ## Write a function that returns a Boolean whether an element is in a list
+
 ```scala
 @tailrec
 def existsA[A](xs: List[A])(p: A => Boolean): Boolean = xs match {
@@ -28,8 +30,9 @@ def existsC[A](xs: List[A])(p: A => Boolean): Boolean =
   xs.foldRight(false)((elem, acc) => {println("elem:"+elem+" | acc:"+acc); acc || p(elem)})
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 exists(A/B/C)(List(5, 1, 2, 3))(_ == 2)        // true
 exists(A/B/C)(List(5, 1, 2, 3, 6, 7))(_ == 2)  // true
 exists(A/B/C)(List("A", "B", "C"))(_ == "B")   // true
@@ -38,13 +41,16 @@ exists(A/B/C)(List("A", "B", "C"))(_ == 2)     // false
 ```
 
 # **Task #2**
+
 ## Write a filter function with foldRight.
+
 ```scala
 def filter[A](xs: List[A])(p: A => Boolean): List[A] =
   xs.foldRight[List[A]](Nil)((elem, acc) => if(p(elem)) elem :: acc else acc)
 ```
 
-### *Tests*
+### _Tests_
+
 ```scala
 filter(List(2,7,1,3,7,8,4,1,6,9))(_ > 3) == List(7, 7, 8, 4, 6, 9)  // true
 filter(List(5, 6, 7, 8, 9))(_ < 4) == Nil                           // true
@@ -60,47 +66,52 @@ filter[Char](Nil)(_ > 'b') == Nil                                   // true
 
 Folds Functions Intuition:
 
-1) Example:
-    ```scala
-    List(1, 3, 8).foldLeft(100)(_ - _)
-    > ((100 - 1) - 3) - 8 == 88
+1. Example:
 
-    List(1, 3, 8).foldRight(100)(_ - _)
-    > 1 - (3 - (8 - 100)) == -94
-    ```
+   ```scala
+   List(1, 3, 8).foldLeft(100)(_ - _)
+   > ((100 - 1) - 3) - 8 == 88
 
-2) Example:
-    ```scala
-    val donuts: Seq[String] = Seq("Plain", "Strawberry", "Glazed")
-    donuts.foldRight("")((a, b) => a + " Donut " + b)
+   List(1, 3, 8).foldRight(100)(_ - _)
+   > 1 - (3 - (8 - 100)) == -94
+   ```
 
-    > "Plain" + "Donut" + ("Strawberry" + "Donut" + ("Glazed" + "Donut") + ""))
-    > Plain Donut Strawberry Donut Glazed Donut
-    ```
+2. Example:
 
-3) Example:
-    ```scala
-    val l = List(1, 2, 3, 4, 5)
+   ```scala
+   val donuts: Seq[String] = Seq("Plain", "Strawberry", "Glazed")
+   donuts.foldRight("")((a, b) => a + " Donut " + b)
 
-    l.foldRight(0)((elem: Int, acc: Int) => {println(acc+"+"+elem); acc + elem})
-    > 0+5
-    > 5+4
-    > 9+3
-    > 12+2
-    > 14+1
-    > val res0: Int = 15
+   > "Plain" + "Donut" + ("Strawberry" + "Donut" + ("Glazed" + "Donut") + ""))
+   > Plain Donut Strawberry Donut Glazed Donut
+   ```
 
-    l.foldRight(List[Int]())((elem: Int, acc: List[Int]) => {println(elem+"::"+acc); elem :: acc})
-    > 5::List()
-    > 4::List(5)
-    > 3::List(4, 5)
-    > 2::List(3, 4, 5)
-    > 1::List(2, 3, 4, 5)
-    > val res1: List[Int] = List(7, 7, 8, 4, 6, 9)
-    ```
+3. Example:
+
+   ```scala
+   val l = List(1, 2, 3, 4, 5)
+
+   l.foldRight(0)((elem: Int, acc: Int) => {println(acc+"+"+elem); acc + elem})
+   > 0+5
+   > 5+4
+   > 9+3
+   > 12+2
+   > 14+1
+   > val res0: Int = 15
+
+   l.foldRight(List[Int]())((elem: Int, acc: List[Int]) => {println(elem+"::"+acc); elem :: acc})
+   > 5::List()
+   > 4::List(5)
+   > 3::List(4, 5)
+   > 2::List(3, 4, 5)
+   > 1::List(2, 3, 4, 5)
+   > val res1: List[Int] = List(7, 7, 8, 4, 6, 9)
+   ```
 
 # **Task #3**
+
 ## Write a function which removes the first found element given in as functional
+
 ```scala
 def remove1[A](xs: List[A])(p: A => Boolean): List[A] =
   xs match {
@@ -117,7 +128,8 @@ def remove2[A](xs: List[A])(p: A => Boolean): List[A] = {
   }
 ```
 
-### *Tests:*
+### _Tests:_
+
 ```scala
 remove1(List(1, 2, 3, 2, 5))(_ == 2) == List(1, 3, 2, 5)            // true
 remove1(List(1, 2, 3, 2, 5))(_ == 4) == List(1, 2, 3, 2, 5)         // true
@@ -135,12 +147,16 @@ remove2(List(4))(_ == 4) == Nil                                     // true
 ```
 
 ## **Explanation:**
+
 This is very close to what I would like to achieve:
+
 ```scala
 def remove1[A](xs: List[A])(p: A => Boolean): List[A] =
   xs.foldRight[List[A]](Nil)((elem, acc) => if(p(elem)) acc else elem :: acc)
 ```
+
 All I need to do is to return just the tail after condition is met, not recursively call repeated process on the tail -> just the tail.
+
 ```scala
 def remove2[A](xs: List[A])(p: A => Boolean): List[A] = {
   @tailrec
@@ -163,7 +179,9 @@ def remove2[A](xs: List[A])(p: A => Boolean): List[A] = {
 ```
 
 # **Task #4**
+
 ## Write a function that splits a list in two at given index without double list traversing.
+
 ```scala
 def splitAt[A](xs: List[A])(n: Int): (List[A], List[A]) = {
   @tailrec
@@ -176,7 +194,8 @@ def splitAt[A](xs: List[A])(n: Int): (List[A], List[A]) = {
 }
 ```
 
-### *Tests:*
+### _Tests:_
+
 ```scala
 splitAt(List('a','b','c','d','e'))(2) == (List('a', 'b'), List('c', 'd', 'e'))   // true
 splitAt(List('a','b','c','d','e'))(0) == ((List(), List('a','b','c','d','e')))   // true
@@ -187,6 +206,7 @@ splitAt[Any](Nil)(0) == (Nil, Nil)                                              
 ```
 
 ## **Explanation:**
+
 ```scala
 def splitAt[A](xs: List[A])(n: Int): (List[A], List[A]) = {
   @tailrec
@@ -203,4 +223,3 @@ def splitAt[A](xs: List[A])(n: Int): (List[A], List[A]) = {
   splitAtTailrec(xs, Nil, n)
 }
 ```
-

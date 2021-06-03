@@ -13,7 +13,9 @@
 ---
 
 # **Task #1**
+
 ## Write a whileLoop function (without using computational effects) that takes two arguments: a condition and an expression, and accurately simulates the performance of a while loop (also syntactically). What type (and why) must the arguments and the result of the function be?
+
 ```scala
 @tailrec
 def whileLoop(condition: => Boolean)(body: => Unit): Unit =
@@ -22,8 +24,9 @@ def whileLoop(condition: => Boolean)(body: => Unit): Unit =
 
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 $ var count = 0
 $ whileLoop(count < 5) { println(count); count+= 1 }
 > var count: Int = 0
@@ -35,6 +38,7 @@ $ whileLoop(count < 5) { println(count); count+= 1 }
 ```
 
 # **Task #2**
+
 ## Write the function `lrepeat`, which for a given positive integer ki of the stream Stream `(x0, x1, x2, x3, ...)` returns a stream where each `xi` element is repeated `k` times
 
 ```scala
@@ -49,8 +53,9 @@ def lrepeat[A](k: Int)(xsl: LazyList[A]): LazyList[A] = {
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 lrepeat(3) (LazyList('a','b','c','d')).force == LazyList('a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'c', 'd', 'd', 'd')
 (lrepeat (3) (LazyList.from(1)) take 12).toList == List(1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4)
 (lrepeat (5) (LazyList.from(2)) take 6).toList == List(2, 2, 2, 2, 2, 3)
@@ -62,10 +67,11 @@ lrepeat(5) (LazyList()).force == Nil
 (lrepeat (3) (LazyList()) take 2).toList == Nil
 ```
 
-
 # **Task #3 a)**
+
 ## Write the function `lBreadth`, which creates a stream containing all the node values of the lazy binary tree
-__Update #1:__ Removed unused parameter, changed name of the second parameter to `queue`.
+
+**Update #1:** Removed unused parameter, changed name of the second parameter to `queue`.
 
 ```scala
 def lBreadth[A](ltree: lBT[A]): LazyList [A] = {
@@ -81,24 +87,27 @@ def lBreadth[A](ltree: lBT[A]): LazyList [A] = {
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 lBreadth(tree_root).toList == List(5)           // true
 lBreadth(tree_lecture).toList == List(1, 2, 3)  // true
 lBreadth(tree_zero).toList == List(4, -2, -2)   // true
 lBreadth(tree_empty).toList == Nil              // true
 ```
 
-
 # **Task #3 b)**
+
 ## Write the function `lTree`: which for a given natural number `n` constructs an infinite lazy binary tree with root `n` and two subtrees `lTree (2 * n)` and `lTree (2 * n + 1)`.
+
 ```scala
 def lTree(n: Int): lBT[Int] =
   if (n > 0) LNode(n, () => lTree(2 * n), () => lTree(2 * n + 1)) else LEmpty
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 (lBreadth(lTree(1)) take 5).toList == List(1, 2, 3, 4, 5)      // true
 (lBreadth(lTree(2)) take 6).toList == List(2, 4, 5, 8, 9, 10)  // true
 (lBreadth(lTree(0))).toList == Nil                             // true

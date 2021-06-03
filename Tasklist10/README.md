@@ -6,15 +6,18 @@
     ·
     <a href="./README.md"><strong>Answers for Task List #10</strong></a>
     ·
-    <a href="./tasklist9.pdf">TaskList10.pdf</a>
+    <a href="./tasklist10.pdf">TaskList10.pdf</a>
   </p>
 </p>
 
 ---
 
 # **Task #1 a)**
+
 ## Rewrite `Consumer`/`Producer` classes from Lecture using `ArrayBlockingQueue` instead `BoundedBuffer`.
+
 ### Lecture
+
 ```scala
 class Producer(name: String, buf: BoundedBuffer) extends Thread(name) {
 	override def run: Unit =
@@ -35,8 +38,8 @@ object prodCons {
 }
 ```
 
-
 ### Rewritten
+
 ```scala
 class Producer(name: String, buf: ArrayBlockingQueue[String]) extends Thread(name) {
   val nameId = s"${name.charAt(0)}${name.charAt(name.length() - 1)}"
@@ -65,9 +68,10 @@ object Task1a {
 ```
 
 # **Task #1 b)**
+
 ## Create several `Consumer`-s and `Producer`-s and investigate.
 
-In the program from sub-point _a)_ create several producers and consumers. Give them unique names, such as `Producer1`, `Consumer1`, etc. In one of the tests, create **two** _producers_ and **three** _consumers. Why doesn't the program end?
+In the program from sub-point _a)_ create several producers and consumers. Give them unique names, such as `Producer1`, `Consumer1`, etc. In one of the tests, create **two** _producers_ and **three** \_consumers. Why doesn't the program end?
 
 ```scala
 object Task1b {
@@ -80,6 +84,7 @@ object Task1b {
 ```
 
 # **Task #1 c)**
+
 ## Analysing the program: why the counter value is not as it could be expected to be? Fixing the program.
 
 Remove the definitions of `Producer` and `Consumer` from the program in point _b)_. Use the `ExecutionContext` to perform the corresponding tasks. Create **two** _producers_ and **three** _consumers_ in one of the tests. Why is the program ending?
@@ -95,17 +100,16 @@ object Task1c {
 }
 ```
 
-
-
 # **Task #2**
+
 ## Dining Philosophers Problem
 
 Write a program that solves the problem of dining philosophers using semaphores (`java.util.concurrent.Semaphore`). The solution should meet the following conditions:
 
 1. A _philosopher_ eats only when he has two _chopsticks_.
 2. Two _philosophers_ cannot hold the same _chopstick_ at the same time.
-3. There is __no blockage (stalemate)__. It can occur, for example, when all _philosophers_ pick up the left-hand _chopsticks_ and wait for the right ones to be released.
-4. Nobody can be starved. The apparently obvious strategy of waiting until both _chopsticks_ are free could starve two philosophers __(why?)__.
+3. There is **no blockage (stalemate)**. It can occur, for example, when all _philosophers_ pick up the left-hand _chopsticks_ and wait for the right ones to be released.
+4. Nobody can be starved. The apparently obvious strategy of waiting until both _chopsticks_ are free could starve two philosophers **(why?)**.
 5. None of the philosophers have a strategy like eating 100% of time. After the meal is over, everyone puts their _chopsticks_ down and goes back to the meditation room.
 6. Philosophers pick up and put down their _chopsticks_ one at a time.
 7. We cannot distinguish any of the philosophers (their algorithms should be the same).

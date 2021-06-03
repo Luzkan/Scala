@@ -13,7 +13,9 @@
 ---
 
 # **Task #1**
+
 ## Define a general class for a covariant unmodifiable queue represented by two lists.
+
 ```scala
 class UnderflowException(msg: String) extends Exception(msg)
 
@@ -61,7 +63,8 @@ object MyQueue {
 }
 ```
 
-### *Tests*
+### _Tests_
+
 ```scala
 // Initializations
 new MyQueue      // res0: MyQueue[Nothing] = (List(), List())
@@ -113,9 +116,8 @@ try { q_0.first } catch { case exception: UnderflowException => print(exception)
 // > UnderflowException: Empty Queue
 ```
 
-
-
 # **Task #2**
+
 ## Write a `breadthBT [A] function: BT [A] => List [A]` traversing binary tree in breadth and returning a list of values stored in tree nodes.
 
 ```scala
@@ -130,8 +132,9 @@ def breadthBT[A](tree: BT[A]): List[A] = {
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 val t = Node(1, Node(2, Empty, Node(3, Empty, Empty)), Empty)
 val tt = Node(1 Node(2, Node(4, Empty, Empty), Empty), Node(3, Node(5, Empty, Node(6, Empty, Empty)), Empty))
 val tree_empty = Empty

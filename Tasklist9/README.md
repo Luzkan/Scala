@@ -13,6 +13,7 @@
 ---
 
 # **Task #1**
+
 ## Analyse the program: why the counter value is not as it could be expected to be?
 
 ```scala
@@ -41,6 +42,7 @@ object Task1a extends App {
 ```
 
 ### a)
+
 ```scala
 // a)
 //    Q: Jak wyjaśnisz różne wartości licznika?
@@ -120,6 +122,7 @@ object Task1c extends App {
 ```
 
 # **Task #2**
+
 ## Implement method `parallel` that takes two blocks of arguments as parameter and executes them simultaneously.
 
 ```scala
@@ -154,9 +157,9 @@ object Task2 extends App {
 }
 ```
 
-### *Tests*
+### _Tests_
 
-``` scala
+```scala
 println("Core tests:")
 println(parallel("a"+1, "b"+2))
 println(parallel(Thread.currentThread.getName, Thread.currentThread.getName))
@@ -172,8 +175,8 @@ startTest(parallel(for(_ <- 0 until 200000) readWriteCounter(), for(_ <- 0 until
 println(s"Race Test: $counter / 400000")
 ```
 
-
 # **Task #3**
+
 ## Implement method `periodically` that takes the number of repetitions and pause-timer as arguments. Method should make use of daemons.
 
 ```scala
@@ -194,8 +197,9 @@ object Task3 extends App {
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 periodically(1000, 5){print("y ")}
 periodically(1000, 25){print("x ")}
 

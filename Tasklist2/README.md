@@ -35,7 +35,8 @@ def take[A](n: Int, xs: List[A]): List[A] = {
 ```
 
 ##### Tests
-``` scala
+
+```scala
 take(2, List(1,2,3,5,6)) == List(1, 2)       // true
 take(-2, List(1,2,3,5,6)) == Nil             // true
 take(8, List(1,2,3,5,6)) == List(1,2,3,5,6)  // true
@@ -298,7 +299,7 @@ val root3: Double => Double = a => {
     //    x_{i+1} = x_{i} + (a/x_{i}^2 - x_{i})/3
     else root3_Tailrec(a, xi + (a/(xi*xi) - xi)/3)
   }
-  
+
   // x_{0} = a/3 for a > 1
   if (a > 1) root3_Tailrec(a, a/3)
   // x_{0} = a for a ≤ 1

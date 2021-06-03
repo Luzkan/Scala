@@ -14,14 +14,17 @@
 
 ### Disclaimer: In the tasks below only `head` and `tail` could be used.
 
-### Task #1
+### **Task #1**
+
 ##### Return sum of the whole list
+
 ```scala
 val suma: List[Double] => Double = xs =>
   if (xs == Nil) 0.0
   else xs.head + suma(xs.tail)
 ```
-``` scala
+
+```scala
 suma(Nil) == 0.0                // True
 suma(List(-1, 2, 3)) == 4.0     // True
 suma(List(5.6)) == 5.6          // True
@@ -29,8 +32,10 @@ suma(List(2, 3)) == 5.0         // True
 suma(List(0.2, 0.6)) == 0.8     // True
 ```
 
-### Task #2
+### **Task #2**
+
 ##### Return pair - first & last element of a list
+
 ```scala
 def ends[A](xs: List[A]): (A, A) =
   if (xs == Nil) throw new NoSuchElementException("empty list")
@@ -46,8 +51,10 @@ ends(List("Ala", "ma", "kota")) == ("Ala", "kota")    // res2 = true
 ends(Nil)                                             // empty list
 ```
 
-### Task #3
+### **Task #3**
+
 ##### Return Boolean whether the list is sorted or not
+
 ```scala
 val posortowana: List[Int] => Boolean = xs =>
   if (xs == Nil || xs.tail == Nil) true
@@ -65,8 +72,10 @@ posortowana(List(1,3,3,5,6,7)) == true  // res6 = True
 posortowana(List())                     // res7 = Empty List
 ```
 
-### Task #4
+### **Task #4**
+
 ##### Return Boolean whether the list is sorted or not
+
 ```scala
 val glue: (List[String], String) => String = (xs, separator) =>
   if (xs == Nil) ""

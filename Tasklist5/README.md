@@ -13,7 +13,9 @@
 ---
 
 # **Task #1**
+
 ## Create a class for polymorphic pair. It should have accessors, mutators and toString method.
+
 ```scala
 // #1
 class MyPair[A, B](var fst: A, var snd: B){ override def toString: String = { f"($fst, $snd)" } }
@@ -37,8 +39,9 @@ class MyPair[A, B] {
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 val p = new MyPair[Int, Double]
 p.toString()	// res0: String = (null, null)
 p.fst			// res1: Int = 0
@@ -50,8 +53,8 @@ p.fst			// res4: Int = 1
 p.snd			// res5: Double = 2.0
 ```
 
-
 # **Task #2 a)**
+
 ## Extend BankAccount class in which 1$ will be withdrawn for every transaction.
 
 ```scala
@@ -69,8 +72,9 @@ class CheckingAccount(initialBalance: Double) extends BankAccount(initialBalance
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 val account = new CheckingAccount(1000)
 account.checkBalance   // res0: Double = 1000.0
 account.deposit(100)   // res1: Double = 1099.0
@@ -78,8 +82,8 @@ account.withdraw(100)  // res2: Double = 998.0
 account.checkBalance   // res3: Double = 998.0
 ```
 
-
 # **Task #2 b)**
+
 ## Extend BankAccount class in which 1$ will be withdrawn after 3rd transaction in a given month. Implement Interest logic.
 
 ```scala
@@ -105,8 +109,9 @@ class SavingsAccount(initialBalance: Double) extends BankAccount(initialBalance)
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 val account = new SavingsAccount(1000)
 account.checkBalance           // res4: Double = 1000.0
 account.earnMonthlyInterest()
@@ -130,9 +135,10 @@ account2.earnMonthlyInterest()
 account2.checkBalance					 // res18: Double = -9.9
 ```
 
-
 # **Task #3 a)**
+
 ## Create an abstract class Animal that has methods for voice, animal type and overridden custom toString. It shall have unmodifiable name in the constructor.
+
 ```scala
 abstract class Animal(val name: String){
   def voice(): String
@@ -142,7 +148,9 @@ abstract class Animal(val name: String){
 ```
 
 # **Task #3 b)**
+
 ## Define public methods for some animals. They should allow to create new instances of animals w/ or w/o name.
+
 ```scala
 class Dog(name: String = "Unnamed") extends Animal(name) {
   override def voice() = "Hau, hau!"
@@ -153,8 +161,9 @@ class Cat(name: String = "Unnamed") extends Animal(name) {
 }
 ```
 
-### *Tests*
-``` scala
+### _Tests_
+
+```scala
 val dog1 = new Dog()
 dog1.toString() == "Dog Unnamed gives a voice: Hau, hau!"    // true
 
@@ -169,7 +178,9 @@ cat2.toString() == "Cat Lilly gives a voice: Meow, meow!"    // true
 ```
 
 # **Task #3 c)**
+
 ## Create Test Class for Animals (w/ Vector).
+
 ```scala
 object TestAnimals {
 	val Animals: Vector[Animal] = Vector(

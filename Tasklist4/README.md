@@ -23,9 +23,9 @@ def sumBT[A](bt: BT[Int]): Int = bt match {
 }
 ```
 
-### *Tests*
+### _Tests_
 
-``` scala
+```scala
 sumBT(t) == 6           // true
 sumBT(tree_empty) == 0  // true
 sumBT(tree_root) == 5   // true
@@ -46,6 +46,7 @@ def foldBT[A, B](f: A => (B, B) => B)(acc: B)(bt: BT[A]): B = bt match {
 ## **Explanation:**
 
 Take a brief look at the regular foldRight function:
+
 ```scala
 def foldRight[A,B](f: A => B => B)(acc: B)(xs: List[A]): B = xs match {
   case Nil => acc
@@ -77,9 +78,9 @@ def postorderBTfold[A](bt: BT[A]): List[A] =
   foldBT((node: A) => (child_left: List[A], child_right: List[A]) => child_left ::: child_right ::: List(node))(Nil)(bt)
 ```
 
-### *Tests*
+### _Tests_
 
-``` scala
+```scala
 sumBTfold(t) == 6           // true
 sumBTfold(tree_empty) == 0  // true
 sumBTfold(tree_root) == 5   // true
@@ -110,7 +111,7 @@ def mapBT[A, B](f: A => B)(tree: BT[A]): BT[B] =
   foldBT[A, BT[B]]((node: A) => (child_left: BT[B], child_right: BT[B]) => Node(f(node), child_left, child_right))(Empty)(tree)
 ```
 
-### *Tests:*
+### _Tests:_
 
 ```scala
 $ mapBT[Int, Int](v => 2 * v)(t)
@@ -147,7 +148,7 @@ def pathExists[A](graph: Graph[A])(from: A, to: A): Boolean = {
 }
 ```
 
-### *Tests:*
+### _Tests:_
 
 ```scala
  pathExists(g)(4, 1)  // true  [4] -> [2] -> [1]
@@ -156,7 +157,6 @@ def pathExists[A](graph: Graph[A])(from: A, to: A): Boolean = {
  pathExists(g)(2,2)   // true  [2] -> [1] -> [2]
 !pathExists(g)(0,0)   // true
 ```
-
 
 ## **Explanation:**
 

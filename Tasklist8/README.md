@@ -13,7 +13,9 @@
 ---
 
 # **Task #1 a)**
+
 ## Write the class extending the queue as a circular array (all operations are performed by modulo the size of the array)
+
 ```scala
 class QueueMut[E: ClassTag](val size: Int = 1000) extends MyQueue[E] {
 	private val queue: Array[E] = new Array[E](size)
@@ -54,7 +56,9 @@ object QueueMut {
 ```
 
 # **Task #1 b)**
+
 ## It's basically the same task, but I did different implementation as requested on labs.
+
 ```scala
 class QueueMut[E: ClassTag] private (val capacity: Int = 1000) extends MyQueue[E] {
   private val queue_size: Int = capacity+1
