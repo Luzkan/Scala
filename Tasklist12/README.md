@@ -20,21 +20,21 @@ Write an actor class for a **Server** that randomly generates an integer between
 
 ```scala
 object Server {
-  def apply(upperLimitNumberGuess: Int): Behavior[Client.MakeGuess] =
-    analyseGuess(nextInt(upperLimitNumberGuess))
+  final case class ClientGuess(guessNum: Int, from: ActorRef[Client.ServerInfo])
 
-  private def analyseGuess(chosenNumber: Int): Behavior[Client.MakeGuess] =
-    Behaviors.receive { (context, message) =>
-      context.log.debug(s"chosenNumber=$chosenNumber")
-      if (message.guessNum == chosenNumber) {
-        context.log.info(s"Guess ${message.guessNum} is correct!")
-        Behaviors.stopped
-      } else {
-        val infoMsg = if (message.guessNum < chosenNumber) "too low" else "too high"
-        context.log.info(s"Received Guess: ${message.guessNum}, which is $infoMsg!")
-        message.from ! Client.KeepGuessing(message.guessNum < chosenNumber)
-        analyseGuess(chosenNumber)
-      }
+  def apply(upper: Int): Behavior[ClientGuess] = {
+    Behaviors.setup { context =>
+      context.log.info(s"Guess my number from the interval [0..$upper]")
+      analyseGuess(nextInt(upper))
+    }
+  }
+
+  private def analyseGuess(chosenNumber: Int): Behavior[ClientGuess] =
+    Behaviors.receiveMessage { message =>
+      if ( message.guessNum > chosenNumber ) { message.from ! Client.NumberTooBig(message.guessNum) }
+      else if ( message.guessNum < chosenNumber) { message.from ! Client.NumberTooLow(message.guessNum) }
+      else { message.from ! Client.NumberGuessed(message.guessNum) }
+      Behaviors.same
     }
 }
 ```
@@ -47,33 +47,46 @@ Write an actor class for the **Client** which guesses the number chosen by the s
 
 ```scala
 object Client {
-  sealed trait Command
-  final case class StartGuessing() extends Command
-  final case class KeepGuessing(guessedToLow: Boolean) extends Command
-  final case class MakeGuess(guessNum: Int, from: ActorRef[KeepGuessing])
+  sealed trait ServerInfo
 
-  def apply(upperLimitNumberGuess: Int, server: ActorRef[MakeGuess]): Behavior[Command] =
-    thinkNewGuess(0, upperLimitNumberGuess/2, upperLimitNumberGuess, server)
+  final case class NumberGuessed(guessNumber: Int) extends ServerInfo
+  final case class NumberTooBig(guessNumber: Int) extends ServerInfo
+  final case class NumberTooLow(guessNumber: Int) extends ServerInfo
 
-  private def thinkNewGuess(lowerLimit: Int, lastGuess: Int, upperLimit: Int, server: ActorRef[MakeGuess]): Behavior[Command] =
+  def apply(upper: Int, serverRef: ActorRef[Server.ClientGuess]): Behavior[ServerInfo] = {
+    Behaviors.setup { context =>
+      val newGuess = nextInt(upper)
+      context.log.info(s"${context.self.path.name} first random try = $newGuess")
+      serverRef ! Server.ClientGuess(newGuess, context.self)
+      thinkNewGuess(0, upper, serverRef)
+    }
+  }
+
+  private def thinkNewGuess(lower: Int, upper: Int, serverRef: ActorRef[Server.ClientGuess]): Behavior[ServerInfo] =
     Behaviors.receive { (context, message) =>
-      Thread.sleep(nextInt(2000) + 500)
+      Thread.sleep(nextInt(1000) + 250)
       message match {
-        case KeepGuessing(guessedToLow) =>
-          val newLower = if (guessedToLow) lastGuess + 1 else lowerLimit
-          val newUpper = if (!guessedToLow) lastGuess - 1 else upperLimit
-          val newGuess = (newLower + newUpper) / 2
-          context.log.debug(s"lower=($lowerLimit -> $newLower), upper=($upperLimit -> $newUpper), lastGuess=$lastGuess")
-          context.log.info(s"Sending new guess: ($newLower + $newUpper)/2 = $newGuess.")
-          server ! MakeGuess (newGuess, context.self)
-          thinkNewGuess(newLower, newGuess, newUpper, server)
-        case StartGuessing() =>
-          context.log.info(s"Sending initial guess: $lastGuess.")
-          server ! MakeGuess (lastGuess, context.self)
-          thinkNewGuess(lowerLimit, lastGuess, upperLimit, server)
+        case NumberTooBig(lastGuess) =>
+          val newUpper = lastGuess - 1
+          val newGuess = (lower + newUpper)/2
+          context.log.info(s"Response: too big. I'm trying: $newGuess")
+          serverRef ! Server.ClientGuess(newGuess, context.self)
+          thinkNewGuess(lower, newUpper, serverRef)
+
+        case NumberTooLow(lastGuess) =>
+          val newLower = lastGuess + 1
+          val newGuess = (newLower + upper)/2
+          context.log.info(s"Response: too low. I'm trying: $newGuess")
+          serverRef ! Server.ClientGuess(newGuess, context.self)
+          thinkNewGuess(newLower, upper, serverRef)
+
+        case NumberGuessed(lastGuess) =>
+          context.log.info(s"${context.self.path.name}: I guessed it! ($lastGuess)")
+          Behaviors.stopped
       }
     }
 }
+
 ```
 
 # **Task #3**
@@ -83,27 +96,38 @@ object Client {
 Write a complete application that will create a **Server** instance and at least two **Clients**, which are guessing the number chosen by the **Server**. In the main method, send a start message to all **Clients**, that makes them start guessing.
 
 ```scala
-object GuesserProcessor {
-  final case class Guesser(upperLimitNumber: Int, numberOfClients: Int)
+object GuesserMain {
+  final case class Guesser(upper: Int, numberOfClients: Int)
 
-  def apply(): Behavior[Guesser] =
-    Behaviors.setup { context =>
-      Behaviors.receiveMessage { message =>
-        val serverRef = context.spawn(Server(message.upperLimitNumber), name="server")
-        for(i <- 0 until message.numberOfClients) {
-          val clientRef = context.spawn(Client(message.upperLimitNumber, serverRef), name=s"client${i+1}")
-          clientRef ! Client.StartGuessing()
-        }
-        Behaviors.same
+  def apply(): Behavior[Guesser] = {
+    Behaviors.receive[Guesser] { (context, message) =>
+      val serverRef = context.spawn(Server(message.upper), name="Server")
+      for (i <- 0 until message.numberOfClients) {
+        context.watch(context.spawn(Client(message.upper, serverRef), name=s"Client${i+1}"))
+      }
+      manageGame(message.numberOfClients)
+    }
+  }
+
+  private def manageGame(numberOfLoggedClients: Int): Behavior[Guesser] =
+    Behaviors.receiveSignal { case (context, Terminated(ref)) =>
+      if (numberOfLoggedClients > 1) {
+        context.log.info(s"Client '${ref.path.name}' won the game. Players left: ${numberOfLoggedClients-1}")
+        manageGame(numberOfLoggedClients-1)
+      } else {
+        context.log.info(s"Client '${ref.path.name}' won the game. All Clients won. Shutting down.")
+        Behaviors.stopped
       }
     }
 }
 
-object Tasklist12 extends App {
-  val numberOfClients = 3
-  val upperLimitNumber = 100
+// ----------------------------------------------------------------------------
 
-  val guesserProcessor: ActorSystem[GuesserProcessor.Guesser] = ActorSystem(GuesserProcessor(), "Guesser")
+object Lista12 extends App {
+  val numberOfClients = 2
+  val upperLimitNumber = 100
+  val guesserProcessor: ActorSystem[GuesserMain.Guesser] = ActorSystem(GuesserMain(), "Guesser")
   guesserProcessor ! Guesser(upperLimitNumber, numberOfClients)
 }
+
 ```
