@@ -14,7 +14,7 @@
 
 # **Task #1**
 
-## Create actor Server that generated random number and awaits for signals from clients with guess messages.
+## Create an actor Server that generates a random number and awaits signals from clients with guess messages.
 
 Write an actor class for a **Server** that randomly generates an integer between `[0 ... N]` _(`N` `> 1` is supposed to be a server constructor parameter)_, displays the appropriate information, and waits for messages from **Clients** trying to guess the number. After receiving the message, it sends a response with information whether the number from **Client** was smaller, greater or equal to the chosen number.
 
@@ -91,9 +91,9 @@ object Client {
 
 # **Task #3**
 
-## Write complete application that creates server instance and at least two clients that are guessing the numbers. Make a start signal from main.
+## Write a complete application that creates a server instance and at least two clients that are guessing the numbers. Make a start signal from main.
 
-Write a complete application that will create a **Server** instance and at least two **Clients**, which are guessing the number chosen by the **Server**. In the main method, send a start message to all **Clients**, that makes them start guessing.
+Write a complete application that will create a **Server** instance and at least two **Clients**, which are guessing the number chosen by the **Server**. In the main method, send a start message to all **Clients**, which makes them start guessing.
 
 ```scala
 object GuesserMain {

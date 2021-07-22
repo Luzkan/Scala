@@ -16,7 +16,7 @@
 
 ### **Task #1**
 
-##### Return sum of the whole list
+##### Return the sum of the whole list
 
 ```scala
 val suma: List[Double] => Double = xs =>
@@ -34,7 +34,7 @@ suma(List(0.2, 0.6)) == 0.8     // True
 
 ### **Task #2**
 
-##### Return pair - first & last element of a list
+##### Return a pair - first & last element of a list
 
 ```scala
 def ends[A](xs: List[A]): (A, A) =
@@ -53,7 +53,7 @@ ends(Nil)                                             // empty list
 
 ### **Task #3**
 
-##### Return Boolean whether the list is sorted or not
+##### Return a Boolean whether the list is sorted or not
 
 ```scala
 val posortowana: List[Int] => Boolean = xs =>
@@ -74,7 +74,7 @@ posortowana(List())                     // res7 = Empty List
 
 ### **Task #4**
 
-##### Return Boolean whether the list is sorted or not
+##### Return merged string based on a given list with a given separator
 
 ```scala
 val glue: (List[String], String) => String = (xs, separator) =>

@@ -14,7 +14,7 @@
 
 # **Task #1**
 
-## Write a whileLoop function (without using computational effects) that takes two arguments: a condition and an expression, and accurately simulates the performance of a while loop (also syntactically). What type (and why) must the arguments and the result of the function be?
+## Write a whileLoop function (without using computational effects) that takes two arguments: a condition and an expression and accurately simulates the performance of a while loop (also syntactically). What type (and why) must the arguments and the result of the function be?
 
 ```scala
 @tailrec
@@ -39,17 +39,17 @@ $ whileLoop(count < 5) { println(count); count+= 1 }
 
 # **Task #2**
 
-## Write the function `lrepeat`, which for a given positive integer ki of the stream Stream `(x0, x1, x2, x3, ...)` returns a stream where each `xi` element is repeated `k` times
+## Write the function `lrepeat`, which for given positive integer ki of the stream Stream `(x0, x1, x2, x3, ...)` returns a stream where each `xi` element is repeated `k` times
 
 ```scala
 def lrepeat[A](k: Int)(xsl: LazyList[A]): LazyList[A] = {
-	def lrepeatRepeater(number: A, iter: Int, tail: LazyList[A]): LazyList[A] =
-		if (iter > 0) number #:: lrepeatRepeater(number, iter - 1, tail) else lrepeat(k)(tail)
+    def lrepeatRepeater(number: A, iter: Int, tail: LazyList[A]): LazyList[A] =
+        if (iter > 0) number #:: lrepeatRepeater(number, iter - 1, tail) else lrepeat(k)(tail)
 
-	xsl match {
-		case head #:: tail => if (k > 0) lrepeatRepeater(head, k, tail) else LazyList()
-		case LazyList() => LazyList()
-	}
+    xsl match {
+        case head #:: tail => if (k > 0) lrepeatRepeater(head, k, tail) else LazyList()
+        case LazyList() => LazyList()
+    }
 }
 ```
 
@@ -71,19 +71,19 @@ lrepeat(5) (LazyList()).force == Nil
 
 ## Write the function `lBreadth`, which creates a stream containing all the node values of the lazy binary tree
 
-**Update #1:** Removed unused parameter, changed name of the second parameter to `queue`.
+**Update #1:** Removed unused parameter, changed the name of the second parameter to `queue`.
 
 ```scala
 def lBreadth[A](ltree: lBT[A]): LazyList [A] = {
-	def lBreathInner(queue: List[lBT[A]]): LazyList [A] =
-		queue match {
-			// Tree will grow up to 2 times the size of the `take n`.
-			// Getting the node out of the tree into output LazyList (#::) and recursive calling on the rest of tree (merged lists)
-			case LNode(node, child_left, child_right) :: tail => node #:: lBreathInner(tail ::: List(child_left(), child_right()))
-			case LEmpty :: tail => lBreathInner(tail)
-			case Nil => LazyList()
-		}
-	lBreathInner(List(ltree))
+    def lBreathInner(queue: List[lBT[A]]): LazyList [A] =
+        queue match {
+            // Tree will grow up to 2 times the size of the `take n`.
+            // Getting the node out of the tree into output LazyList (#::) and recursive calling on the rest of tree (merged lists)
+            case LNode(node, child_left, child_right) :: tail => node #:: lBreathInner(tail ::: List(child_left(), child_right()))
+            case LEmpty :: tail => lBreathInner(tail)
+            case Nil => LazyList()
+        }
+    lBreathInner(List(ltree))
 }
 ```
 

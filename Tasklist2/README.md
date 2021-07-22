@@ -285,7 +285,7 @@ val replicate: List[Int] => List[Int] = xs => {
 
 ### Task #5
 
-##### Calculate 3rd root of a double with epsilon approximation.
+##### Calculate the 3rd root of a double with epsilon approximation.
 
 ```scala
 

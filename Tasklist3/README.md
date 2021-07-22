@@ -110,7 +110,7 @@ Folds Functions Intuition:
 
 # **Task #3**
 
-## Write a function which removes the first found element given in as functional
+## Write a function that removes the first found element given in as functional
 
 ```scala
 def remove1[A](xs: List[A])(p: A => Boolean): List[A] =
@@ -155,7 +155,7 @@ def remove1[A](xs: List[A])(p: A => Boolean): List[A] =
   xs.foldRight[List[A]](Nil)((elem, acc) => if(p(elem)) acc else elem :: acc)
 ```
 
-All I need to do is to return just the tail after condition is met, not recursively call repeated process on the tail -> just the tail.
+All I need to do is to return just the tail after the condition is met, not recursively call repeated process on the tail -> just the tail.
 
 ```scala
 def remove2[A](xs: List[A])(p: A => Boolean): List[A] = {
@@ -180,7 +180,7 @@ def remove2[A](xs: List[A])(p: A => Boolean): List[A] = {
 
 # **Task #4**
 
-## Write a function that splits a list in two at given index without double list traversing.
+## Write a function that splits a list in two at a given index without double list traversing.
 
 ```scala
 def splitAt[A](xs: List[A])(n: Int): (List[A], List[A]) = {

@@ -126,7 +126,7 @@ object Task2b {
 
 # **Task #3**
 
-## Count the amount of words in all files in a given directory
+## Count the number of words in all files in a given directory
 
 Count the number of words in each text file of a specified folder and print the result as tuple `(filename, number of words)`, sorted in ascending order _(by the number of words)_. We can assume for the sake of simplicity that words are separated by spaces (use the split method). Calculations should be performed asynchronously. The program has to be written functionally.
 

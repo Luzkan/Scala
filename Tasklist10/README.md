@@ -85,7 +85,7 @@ object Task1b {
 
 # **Task #1 c)**
 
-## Analysing the program: why the counter value is not as it could be expected to be? Fixing the program.
+## Analyse the program: why the counter value is not as it could be expected to be? Fixing the program.
 
 Remove the definitions of `Producer` and `Consumer` from the program in point _b)_. Use the `ExecutionContext` to perform the corresponding tasks. Create **two** _producers_ and **three** _consumers_ in one of the tests. Why is the program ending?
 

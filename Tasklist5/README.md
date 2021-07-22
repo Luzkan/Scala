@@ -14,7 +14,7 @@
 
 # **Task #1**
 
-## Create a class for polymorphic pair. It should have accessors, mutators and toString method.
+## Create a class for polymorphic pairs. It should have accessors, mutators and toString method.
 
 ```scala
 // #1
@@ -22,20 +22,20 @@ class MyPair[A, B](var fst: A, var snd: B){ override def toString: String = { f"
 
 // #2
 class MyPair[A, B] {
-	// Accessors
-	private[this] var f: A = _
-	private[this] var s: B = _
+    // Accessors
+    private[this] var f: A = _
+    private[this] var s: B = _
 
-	// Variables
-	def fst: A = f
-	def snd: B = s
+    // Variables
+    def fst: A = f
+    def snd: B = s
 
-	// Mutators
-	def fst_=(x: A) { f = x }
-	def snd_=(x: B) { s = x }
+    // Mutators
+    def fst_=(x: A) { f = x }
+    def snd_=(x: B) { s = x }
 
-	// Method
-	override def toString: String = { f"($fst, $snd)" }
+    // Method
+    override def toString: String = { f"($fst, $snd)" }
 }
 ```
 
@@ -43,14 +43,14 @@ class MyPair[A, B] {
 
 ```scala
 val p = new MyPair[Int, Double]
-p.toString()	// res0: String = (null, null)
-p.fst			// res1: Int = 0
-p.snd			// res2: Double = 0.0
-p.fst = 1		// // mutated p.fst
-p.snd = 2.0		// // mutated p.snd
-p.toString()	// res3: String = (1, 2.0)
-p.fst			// res4: Int = 1
-p.snd			// res5: Double = 2.0
+p.toString()    // res0: String = (null, null)
+p.fst           // res1: Int = 0
+p.snd           // res2: Double = 0.0
+p.fst = 1       // // mutated p.fst
+p.snd = 2.0     // // mutated p.snd
+p.toString()    // res3: String = (1, 2.0)
+p.fst           // res4: Int = 1
+p.snd           // res5: Double = 2.0
 ```
 
 # **Task #2 a)**
@@ -60,15 +60,15 @@ p.snd			// res5: Double = 2.0
 ```scala
 class CheckingAccount(initialBalance: Double) extends BankAccount(initialBalance) {
 
-	// Transaction fee is fixed to withdraw 1$ from the account
-	private val FEE = 1
+    // Transaction fee is fixed to withdraw 1$ from the account
+    private val FEE = 1
 
-	// Preventing any potential problem related to fee value - taking the abs
-	// value out of the `fee` variable in case one, by mistake, sets it to negative
-	def transactionFee(): Double = { super.withdraw( abs(FEE)) }
+    // Preventing any potential problem related to fee value - taking the abs
+    // value out of the `fee` variable in case one, by mistake, sets it to negative
+    def transactionFee(): Double = { super.withdraw( abs(FEE)) }
 
-	override def deposit(amount: Double): Double = { transactionFee(); super.deposit(amount) }
-	override def withdraw(amount: Double): Double = { transactionFee(); super.withdraw(amount) }
+    override def deposit(amount: Double): Double = { transactionFee(); super.deposit(amount) }
+    override def withdraw(amount: Double): Double = { transactionFee(); super.withdraw(amount) }
 }
 ```
 
@@ -88,24 +88,24 @@ account.checkBalance   // res3: Double = 998.0
 
 ```scala
 class SavingsAccount(initialBalance: Double) extends BankAccount(initialBalance) {
-	private val FEE = 1
-	private val FREE_TRANSACTIONS_PER_MONTH = 3
-	private var transactionsDoneThisMonth = 0
-	private val MONTHLY_INTEREST = 0.01  // 1%
+    private val FEE = 1
+    private val FREE_TRANSACTIONS_PER_MONTH = 3
+    private var transactionsDoneThisMonth = 0
+    private val MONTHLY_INTEREST = 0.01  // 1%
 
-	def manageTransaction(): Unit = {
-		transactionsDoneThisMonth += 1
-		if (transactionsDoneThisMonth > FREE_TRANSACTIONS_PER_MONTH){ super.withdraw( abs(FEE)) }
-	}
+    def manageTransaction(): Unit = {
+        transactionsDoneThisMonth += 1
+        if (transactionsDoneThisMonth > FREE_TRANSACTIONS_PER_MONTH){ super.withdraw( abs(FEE)) }
+    }
 
-	override def deposit(amount: Double): Double = { manageTransaction(); super.deposit(amount) }
-	override def withdraw(amount: Double): Double = { manageTransaction(); super.withdraw(amount) }
+    override def deposit(amount: Double): Double = { manageTransaction(); super.deposit(amount) }
+    override def withdraw(amount: Double): Double = { manageTransaction(); super.withdraw(amount) }
 
-	def earnMonthlyInterest(): Unit = {
-		transactionsDoneThisMonth = 0
-		if (this.checkBalance >= 0){ super.deposit(MONTHLY_INTEREST * this.checkBalance) }
-		else { super.deposit(MONTHLY_INTEREST * this.checkBalance) }
-	}
+    def earnMonthlyInterest(): Unit = {
+        transactionsDoneThisMonth = 0
+        if (this.checkBalance >= 0){ super.deposit(MONTHLY_INTEREST * this.checkBalance) }
+        else { super.deposit(MONTHLY_INTEREST * this.checkBalance) }
+    }
 }
 ```
 
@@ -124,20 +124,20 @@ account.deposit(100)           // res10: Double = 999.2
 val account2 = new SavingsAccount(0)
 // Testing Case: Account Balance == 0.0
 // Should do nothing
-account2.checkBalance					 // res13: Double = 0.0
+account2.checkBalance          // res13: Double = 0.0
 account2.earnMonthlyInterest()
-account2.checkBalance					 // res15: Double = 0.0
+account2.checkBalance          // res15: Double = 0.0
 
 // Testing Case: Account Balance < 0.0
 // Should increase debt by 1%
-account2.withdraw(10)	 // res16: Double = -10.0
+account2.withdraw(10)          // res16: Double = -10.0
 account2.earnMonthlyInterest()
-account2.checkBalance					 // res18: Double = -9.9
+account2.checkBalance          // res18: Double = -9.9
 ```
 
 # **Task #3 a)**
 
-## Create an abstract class Animal that has methods for voice, animal type and overridden custom toString. It shall have unmodifiable name in the constructor.
+## Create an abstract class Animal that has methods for voice, animal type and overridden custom toString. It shall have an unmodifiable name in the constructor.
 
 ```scala
 abstract class Animal(val name: String){
@@ -149,7 +149,7 @@ abstract class Animal(val name: String){
 
 # **Task #3 b)**
 
-## Define public methods for some animals. They should allow to create new instances of animals w/ or w/o name.
+## Define public methods for some animals. They should allow creating new instances of animals w/ or w/o name.
 
 ```scala
 class Dog(name: String = "Unnamed") extends Animal(name) {
@@ -183,16 +183,16 @@ cat2.toString() == "Cat Lilly gives a voice: Meow, meow!"    // true
 
 ```scala
 object TestAnimals {
-	val Animals: Vector[Animal] = Vector(
-		new Dog(),
-		new Dog("Max"),
-		new Cat(),
-		new Cat("Lilly")
-	)
+    val Animals: Vector[Animal] = Vector(
+        new Dog(),
+        new Dog("Max"),
+        new Cat(),
+        new Cat("Lilly")
+    )
 
-	def main(args: Array[String]): Unit = {
-		for (animal <- Animals) { println(animal.toString())}
-	}
+    def main(args: Array[String]): Unit = {
+        for (animal <- Animals) { println(animal.toString())}
+    }
 }
 
 TestAnimals.main(Array())

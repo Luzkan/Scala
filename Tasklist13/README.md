@@ -14,7 +14,7 @@
 
 # **Task #1**
 
-## Define **two** `observable` objects, one of which emits an `event` every `5` and the other one emits an `event` every `12` second but both of them do not emit anything when time is multiple of `30` seconds. One of them should use `merge` method.
+## Define **two** `observable` objects, one of which emits an `event` every `5` and the other one emits an `event` every `12` second but both of them do not emit anything when time is multiple of `30` seconds. One of them should use the `merge` method.
 
 ```scala
 case class OnlyIfAAndNotB[A](p1: A => Boolean, p2: A => Boolean) extends (A => Boolean) {
@@ -32,7 +32,7 @@ object Task1a extends App {
 
 # **Task #2**
 
-## Define **one** `observable` object that emits an `event` every `5` and `12` second but not when time is multiple of `30` seconds. Use `filter` method.
+## Define **one** `observable` object that emits an `event` every `5` and `12` second but not when time is multiple of `30` seconds. Use the `filter` method.
 
 ```scala
 case class Or[A](p1: A => Boolean, p2: A => Boolean) extends (A => Boolean) {

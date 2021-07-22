@@ -66,7 +66,7 @@ object Task1a extends App {
 //       Jest to tzw. "wyścig danych" (ang. data race)
 ```
 
-### b) Fix it with synchronised code
+### b) Fix it with synchronized code
 
 ```scala
 object Task1b extends App {
@@ -123,7 +123,7 @@ object Task1c extends App {
 
 # **Task #2**
 
-## Implement method `parallel` that takes two blocks of arguments as parameter and executes them simultaneously.
+## Implement method `parallel` that takes two blocks of arguments as a parameter and executes them simultaneously.
 
 ```scala
 object Task2 extends App {
@@ -177,7 +177,7 @@ println(s"Race Test: $counter / 400000")
 
 # **Task #3**
 
-## Implement method `periodically` that takes the number of repetitions and pause-timer as arguments. Method should make use of daemons.
+## Implement method `periodically` that takes the number of repetitions and pause-timer as arguments. The method should make use of daemons.
 
 ```scala
 object Task3 extends App {

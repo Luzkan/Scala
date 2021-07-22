@@ -56,7 +56,7 @@ def foldRight[A,B](f: A => B => B)(acc: B)(xs: List[A]): B = xs match {
 
 # **Task #3**
 
-## Write a function which uses foldBT (from Task #2) to sum up the vertices from Binary Tree and another one that creates a list out of vertices from Binary Tree (infix, prefix, postfix)
+## Write a function that uses foldBT (from Task #2) to sum up the vertices from Binary Tree and another one that creates a list out of vertices from Binary Tree (infix, prefix, postfix)
 
 ```scala
 def sumBTfold: BT[Int] => Int = bin_tree => foldBT((node: Int) => (child_left: Int, child_right: Int) => node + child_left + child_right)(0)(bin_tree)
